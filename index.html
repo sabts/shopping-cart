@@ -9,12 +9,34 @@
   <body>
     <header>
       <h1>Desserts</h1>
-      <div class="filter-box">
-        <button>Default</button>
-        <button>Name</button>
-        <button>Price</button>
+      <div id="filters" class="filter-box">
+        <button data-filter="default" class="filter-button">Default</button>
+        <button data-filter="name"  class="filter-button">Name</button>
+        <button data-filter="price"  class="filter-button">Price</button>
       </div>
     </header>
+    <main class="main-container">
+      <section id="gallery" class="gallery">
+        <article>
+          <div class="product-picture">
+            <picture>
+              <source media="(min-width: 1040px)" src="assets/images/image-waffle-desktop.jpg"/>
+              <source media="(min-width: 768px)" src="assets/images/image-waffle-tablet.jpg"/>
+              <source media="(min-width: 360px)" src="assets/images/image-waffle-mobile.jpg"/>
+              <img src="./assets/images/image-waffle-mobile.jpg" alt="A waffle tower with sliced strawberries and icing sugar.">
+            </picture>
+          </div>
+          <div>
+            <button class="add-button"
+            <img src="./assets/images/favicon-32x32.png"> Add to Cart</button>
+            <button class="hide">4</button>
+          </div>
+          <span class="product-caption">Waffle</span>
+          <span class="product-description">Waffle with Berries</span>
+          <span class="product-price">$6.50</span>
+        </article>
+      </section>
+    </main>
     <script src="./js/scripts.js"></script>
   </body>
 </html>
