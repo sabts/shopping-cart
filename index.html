@@ -10,14 +10,14 @@
     <header>
       <h1>Desserts</h1>
       <div id="filters" class="filter-box">
-        <button data-filter="default" class="filter-button">Default</button>
-        <button data-filter="name"  class="filter-button">Name</button>
-        <button data-filter="price"  class="filter-button">Price</button>
+        <button data-filter="default"class="button button-primary filter">Default</button>
+        <button data-filter="name"  class="button button-primary filter">Name</button>
+        <button data-filter="price"  class="button button-primary filter">Price</button>
       </div>
     </header>
     <main class="main-container">
       <section id="gallery" class="gallery">
-        <article>
+        <article class="product-card">
           <div class="product-picture">
             <picture>
               <source media="(min-width: 1040px)" src="assets/images/image-waffle-desktop.jpg"/>
@@ -26,15 +26,33 @@
               <img src="./assets/images/image-waffle-mobile.jpg" alt="A waffle tower with sliced strawberries and icing sugar.">
             </picture>
           </div>
-          <div>
-            <button class="add-button"
-            <img src="./assets/images/favicon-32x32.png"> Add to Cart</button>
-            <button class="hide">4</button>
+          <div class="product-buttons">
+            <button class="button button-primary cart-action">
+            <img src="./assets/images/icon-add-to-cart.svg"> Add to Cart
+          </button>
+            <div class="button button-secondary cart-action">
+               <button class="cartbutton-icon">
+                <img src="./assets/images/icon-decrement-quantity.svg"> 
+               </button>
+              <span>1</span>
+              <button class="cartbutton-icon">
+                <img src="./assets/images/icon-increment-quantity.svg"> 
+              </button>
+            </div>
           </div>
-          <span class="product-caption">Waffle</span>
-          <span class="product-description">Waffle with Berries</span>
+          <div class="product-content">
+          <span class="product-name">Waffle</span>
+          <span class="product-title">Waffle with Berries</span>
           <span class="product-price">$6.50</span>
+        </div>
         </article>
+      </section>
+      <section class="shopping-cart-container">
+        <h2>Your Cart (0)</h2>
+        <div>
+          <img src="./assets/images/illustration-empty-cart.svg">
+          <p>Your added items will appear here</p>
+        </div>
       </section>
     </main>
     <script src="./js/scripts.js"></script>
