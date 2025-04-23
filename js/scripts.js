@@ -103,6 +103,21 @@ const PRODUCTS = [
     }
   ];
 
+const sortByName = [...PRODUCTS];
+const sortByPrice = [...PRODUCTS];
+
+let  currentFilter = "default";
+
+const filterProducts = () => {
+  const filterSelected = filtersElement.querySelector('.filter-active').dataset.filter;
+
+  if(filterSelected === 'name'){
+   sortByName.sort((a, b) => a.name.localeCompare(b.name));
+  } else if (filterSelected === 'price'){
+    sortByPrice.sort((a, b) => a.price - b.price);
+  }
+}
+
   const createProduct = () => {
     PRODUCTS.forEach(product => {
 
@@ -113,19 +128,29 @@ const PRODUCTS = [
 
         //Imagen del producto 
         //div del producto hijo 0 de product card (hijo 0)
-        const pictureDiv = document.createElement('div')
+        const pictureDiv = document.createElement('div');
+        pictureDiv.classList.add('product-picture')
 
         //imagenes del producto
         const pictureElement = document.createElement('picture');
         const sourceDesktop = document.createElement('source');
         const sourceTablet = document.createElement('source');
         const sourceMobile = document.createElement('source');
-        sourceDesktop.src = product.imgDesktop
-        sourceTablet.src = product.imgTablet
-        sourceMobile.src = product.imgMobile
+        sourceDesktop.media = "(min-width: 1040px)";
+        sourceDesktop.srcset = product.imgDesktop
+
+        sourceTablet.media = "(min-width: 768px)";
+        sourceTablet.srcset = product.imgTablet;
+
+        sourceMobile.media = "(min-width: 360px)"
+        sourceMobile.srcset = product.imgMobile;
+
+        const imgElement = document.createElement('img');
+        imgElement.src = product.imgMobile;
+        imgElement.alt = product.alt
 
         //Agrego todas al div
-        pictureElement.append(sourceDesktop, sourceTablet, sourceMobile);
+        pictureElement.append(sourceDesktop, sourceTablet, sourceMobile, imgElement);
         pictureDiv.append(pictureElement);
 
         //Botones del producto hijo 1 de product card (hijo 0)
@@ -194,4 +219,14 @@ const PRODUCTS = [
     })
 }
 
-createProduct()
+const sortProducts = () => {
+  currentFilter = event.target.dataset.filter
+  console.log(currentFilter) 
+  //const filterType = filtersElement.querySelector('.filter-active').dataset.filter;
+  //sortByName.sort((a,b) => a.localeCompare(b));
+
+  createProduct(currentFilter);
+}
+createProduct();
+
+filtersElement.addEventListener('click',sortProducts)

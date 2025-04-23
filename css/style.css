@@ -25,13 +25,27 @@ nav ul{
 body{
     margin: 0;
     font-family: sans-serif;
-    padding-inline: 1.5rem;
+    padding: 1.5rem;
     background: #FCF8F6;
 }
 .filter-box{
     display: flex;
     gap: 1.125rem;
     margin-bottom: 1.625rem;
+}
+
+.gallery{
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+@media screen and (width>768px){
+    .gallery{
+        grid-template-columns: repeat(3, 1fr);
+        margin-bottom: 79px;
+    }
 }
 .product-card{
     display: flex;
@@ -52,7 +66,6 @@ body{
     flex-direction: column;
     align-self: center;
 }
-
 .button{
     display: flex;
     padding: 12px;
@@ -74,6 +87,10 @@ body{
 .filter{
     width: 76.868px;
     height: 34px;
+}
+.filter-active{
+    background-color: var(--selected-product-color);
+    color: #FFF;
 }
 .cart-action{
     width: 160px;
@@ -110,4 +127,19 @@ body{
     font-size: 1rem;
     color: var(--selected-product-color);
     font-weight: 600;
+}
+.shopping-cart-container{
+    display: flex;
+    padding: 24px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+    align-self: stretch;
+    border-radius: 12px;
+    background: #FFF;
+}
+.cart-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
