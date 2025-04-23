@@ -115,7 +115,7 @@ const PRODUCTS = [
         //div del producto hijo 0 de product card (hijo 0)
         const pictureDiv = document.createElement('div')
 
-        //imgagenes del producto
+        //imagenes del producto
         const pictureElement = document.createElement('picture');
         const sourceDesktop = document.createElement('source');
         const sourceTablet = document.createElement('source');
@@ -126,7 +126,7 @@ const PRODUCTS = [
 
         //Agrego todas al div
         pictureElement.append(sourceDesktop, sourceTablet, sourceMobile);
-        pictureDiv.append(pictureDiv);
+        pictureElement.append(pictureDiv);
 
         //Botones del producto hijo 1 de product card (hijo 0)
         const buttonDiv = document.createElement('div');
@@ -156,8 +156,11 @@ const PRODUCTS = [
         buttonPlusandMinusDiv.append(buttonMinus, buttonNumberValue, plusButton)
         buttonDiv.append(addToCartButton,buttonPlusandMinusDiv)
 
-        //cuando damos click a los botones eventos
-        addToCartButton.click = addToCartButton.classList.add(hide), buttonPlusandMinusDiv.classList.remove('hide')
+        //cuando damos click a los botones eventos (posiblemente borre esto para hacerlo en otra funcion)
+        addToCartButton.addEventListener('click', () => {
+            addToCartButton.classList.add('hide');
+            buttonPlusandMinusDiv.classList.remove('hide');
+          });
 
         //text content del producto hijo 2 de product card
         const productTextContenDiv = document.createElement('div');
@@ -173,7 +176,7 @@ const PRODUCTS = [
 
         const productPrice = document.createElement('span');
         productPrice.classList.add('product-price');
-        productPrice.textContent = product.price;
+        productPrice.textContent = `$${product.price}`
 
         //lo guardamos el contenido en el div
         productTextContenDiv.append(productName, productTitle, productPrice)
@@ -185,3 +188,4 @@ const PRODUCTS = [
     })
 }
 
+createProduct()
