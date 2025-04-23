@@ -125,8 +125,8 @@ const PRODUCTS = [
         sourceMobile.src = product.imgMobile
 
         //Agrego todas al div
-        pictureDiv.append(sourceDesktop, sourceTablet, sourceMobile);
-        pictureElement.append(pictureDiv);
+        pictureElement.append(sourceDesktop, sourceTablet, sourceMobile);
+        pictureDiv.append(pictureElement);
 
         //Botones del producto hijo 1 de product card (hijo 0)
         const buttonDiv = document.createElement('div');
