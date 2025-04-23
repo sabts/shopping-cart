@@ -135,23 +135,29 @@ const PRODUCTS = [
         //boton 1 (add to cart)
         const addToCartButton = document.createElement('button');
         addToCartButton.classList.add("button", "button-primary", "cart-action")
-        addToCartButton.src = "./assets/images/icon-add-to-cart.svg"
+        const cartIcon = document.createElement('img');
+        cartIcon.src = "./assets/images/icon-add-to-cart.svg";
         addToCartButton.textContent = 'Add to Cart';
 
+        addToCartButton.prepend(cartIcon)
         //boton 2 (agregar o quitar productos)
         const buttonPlusandMinusDiv = document.createElement('div');
         buttonPlusandMinusDiv.classList.add('button', 'button-secondary', 'cart-action', 'hide')
 
         const buttonMinus = document.createElement('button');
-        buttonMinus.classList.add('cartbutton-icon')
-        buttonMinus.src = "./assets/images/icon-decrement-quantity.svg";
+        const minusIcon = document.createElement('img');
+        buttonMinus.classList.add('cartbutton-icon');
+        minusIcon.src= "./assets/images/icon-decrement-quantity.svg"
+        buttonMinus.append(minusIcon)
 
         const buttonNumberValue = document.createElement('span');
         buttonNumberValue.textContent = 1;
 
         const plusButton = document.createElement('button');
+        const plusIcon = document.createElement('img');
         plusButton.classList.add('cartbutton-icon');
-        plusButton.src = "./assets/images/icon-increment-quantity.svg";
+        plusIcon.src = "./assets/images/icon-increment-quantity.svg";
+        plusButton.append(plusIcon)
 
         buttonPlusandMinusDiv.append(buttonMinus, buttonNumberValue, plusButton)
         buttonDiv.append(addToCartButton,buttonPlusandMinusDiv)
@@ -166,8 +172,8 @@ const PRODUCTS = [
         const productTextContenDiv = document.createElement('div');
         productTextContenDiv.classList.add('product-content');
 
-        const productName = document.createElement('span')
-        productName.classList.add('product-name')
+        const productName = document.createElement('span');
+        productName.classList.add('product-name');
         productName.textContent = product.name;
 
         const productTitle = document.createElement('span');
