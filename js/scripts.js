@@ -103,6 +103,8 @@ const PRODUCTS = [
     }
   ];
 
+  let shoppingCart = [];
+
   const changeButton = (event) => {
     const buttonclicked = event.target;
     //console.log(buttonclicked)
@@ -122,24 +124,64 @@ const PRODUCTS = [
     const pictureOfproductSelected = galleryElement.children[0].children[0];
   
     if (buttonclicked === addButton) {
-      console.log('Click en Add to Cart');
-      //addButton.classList.add('hide');
+     //console.log('Click en Add to Cart');
+      addButton.classList.add('hide');
       plusminusButton.classList.remove('hide');
       pictureOfproductSelected.classList.add('product-picture-selected');
     } else if (countSpan.textContent === '1' && buttonclicked === minusButton) {
-      console.log('Click en Minus Button y el text es 1');
+      //console.log('Click en Minus Button y el text es 1');
       addButton.classList.remove('hide');
       plusminusButton.classList.add('hide');
       pictureOfproductSelected.classList.remove('product-picture-selected');
     }
   }
 
-  const createProduct = (products) => {
+const amountOfProduct = (event, product) => {
+  
+  const buttonclicked = event.target;
+  const addButton = galleryElement.children[0].children[1].children[0];
+  const minusButton = galleryElement.children[0].children[1].children[1].children[0];
+  const plusButton = galleryElement.children[0].children[1].children[1].children[2];
+  const countSpan = minusButton.nextSibling;
 
+  let quantity = +countSpan.textContent;
+
+  const productExists = shoppingCart.some(item => item.id === product.id);
+
+  if (!productExists) {
+    shoppingCart.push({ ...product, quantity: 1 });
+    quantity = 0;
+  } else {
+    // Si el producto ya está en el carrito, la cantidad++
+    for (const item of shoppingCart) {
+      if (item.id === product.id) {
+        item.quantity++;
+        quantity = item.quantity;
+        console.log("Nueva cantidad:", quantity);
+        break;
+      }
+    }
+  }
+  if (buttonclicked === plusButton) {
+    for (const item of shoppingCart) {
+      if (item.id === product.id) {
+        item.quantity++
+        quantity = item.quantity;
+        console.log("Nueva cantidad después de +:", quantity);
+        break;
+      }
+    }
+}
+console.log("Productos en el carrito final:", shoppingCart);
+}
+
+  const createProduct = (products) => {
     galleryElement.textContent = "";
+    const fragment = document.createDocumentFragment(); //hijo 0
+
     products.forEach(product => {
 
-        //product card: hijo 0 de gallery Element
+        //product card: hijo 0 de 
         const productArticle = document.createElement('article');
         productArticle.classList.add('product-card');
         productArticle.id = product.id;
@@ -205,10 +247,13 @@ const PRODUCTS = [
         buttonPlusandMinusDiv.append(buttonMinus, buttonNumberValue, plusButton)
         buttonDiv.append(addToCartButton,buttonPlusandMinusDiv);
 
-        //para agregar al carrito
-        //addToCartButton.addEventListener('click', changeButton(product))
-        //buttonPlusandMinusDiv.addEventListener('click', changeButton(product))
-
+        plusButton.addEventListener('click', (event) => {
+          amountOfProduct(event, product);
+        });
+        buttonMinus.addEventListener('click', (event) => {
+          amountOfProduct(event, product);
+        });
+        
         //text content del producto hijo 2 de product card
         const productTextContenDiv = document.createElement('div');
         productTextContenDiv.classList.add('product-content');
@@ -233,6 +278,7 @@ const PRODUCTS = [
     productArticle.append(pictureDiv, buttonDiv, productTextContenDiv);
     galleryElement.append(productArticle);
     })
+    galleryElement.append(fragment);
 }
 
 const filterProducts = (event) => {
@@ -263,8 +309,6 @@ const filterProducts = (event) => {
     createProduct(PRODUCTS);
     console.log(PRODUCTS)
   }
-}
-const amountOfProduct = () => {
 }
 
 createProduct(PRODUCTS);

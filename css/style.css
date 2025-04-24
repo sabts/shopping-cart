@@ -47,6 +47,14 @@ body{
         margin-bottom: 79px;
     }
 }
+@media screen and (width>768px){
+    .main-container{
+        display: flex;
+    }
+    .gallery{
+        margin-right: 32px;
+    }
+}
 .product-card{
     display: flex;
     width: 327px;
