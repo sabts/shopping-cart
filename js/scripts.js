@@ -106,7 +106,7 @@ const PRODUCTS = [
   const createProduct = (products) => {
 
     galleryElement.textContent = "";
-    PRODUCTS.forEach(product => {
+    products.forEach(product => {
 
         //product card: hijo 0 de gallery Element
         const productArticle = document.createElement('article');
@@ -205,6 +205,7 @@ const PRODUCTS = [
     galleryElement.append(productArticle);
     })
 }
+
 const filterProducts = (event) => {
   const filterSelected = event.target.dataset.filter;
   console.log(filterSelected);
@@ -234,6 +235,9 @@ const filterProducts = (event) => {
     console.log(PRODUCTS)
   }
 }
-createProduct();
+const amountofProduct = () => {
+  
+}
 
+createProduct(PRODUCTS);
 filtersElement.addEventListener('click', filterProducts);
