@@ -57,7 +57,7 @@ body{
 .product-picture{
     margin-bottom: -40px;
 }
-.product-picture::selection {
+.product-picture-selected {
     border-radius: 8px;
     border: 1px solid var(--selected-product-boder-color);
 }

@@ -103,6 +103,37 @@ const PRODUCTS = [
     }
   ];
 
+  const changeButton = (event) => {
+    const buttonclicked = event.target;
+    //console.log(buttonclicked)
+
+    const addButton = galleryElement.children[0].children[1].children[0];
+    //console.log(addButton)
+
+    const plusminusButton = galleryElement.children[0].children[1].children[1]
+    //console.log(plusminusButton)
+
+    const minusButton = galleryElement.children[0].children[1].children[1].children[0];
+    //console.log(minusButton)
+
+    const countSpan = minusButton.nextSibling
+    //console.log(countSpan)
+
+    const pictureOfproductSelected = galleryElement.children[0].children[0];
+  
+    if (buttonclicked === addButton) {
+      console.log('Click en Add to Cart');
+      //addButton.classList.add('hide');
+      plusminusButton.classList.remove('hide');
+      pictureOfproductSelected.classList.add('product-picture-selected');
+    } else if (countSpan.textContent === '1' && buttonclicked === minusButton) {
+      console.log('Click en Minus Button y el text es 1');
+      addButton.classList.remove('hide');
+      plusminusButton.classList.add('hide');
+      pictureOfproductSelected.classList.remove('product-picture-selected');
+    }
+  }
+
   const createProduct = (products) => {
 
     galleryElement.textContent = "";
@@ -172,13 +203,11 @@ const PRODUCTS = [
         plusButton.append(plusIcon)
 
         buttonPlusandMinusDiv.append(buttonMinus, buttonNumberValue, plusButton)
-        buttonDiv.append(addToCartButton,buttonPlusandMinusDiv)
+        buttonDiv.append(addToCartButton,buttonPlusandMinusDiv);
 
-        //cuando damos click a los botones eventos (posiblemente borre esto para hacerlo en otra funcion)
-        addToCartButton.addEventListener('click', () => {
-            addToCartButton.classList.add('hide');
-            buttonPlusandMinusDiv.classList.remove('hide');
-          });
+        //para agregar al carrito
+        //addToCartButton.addEventListener('click', changeButton(product))
+        //buttonPlusandMinusDiv.addEventListener('click', changeButton(product))
 
         //text content del producto hijo 2 de product card
         const productTextContenDiv = document.createElement('div');
@@ -235,9 +264,14 @@ const filterProducts = (event) => {
     console.log(PRODUCTS)
   }
 }
-const amountofProduct = () => {
-  
+const amountOfProduct = () => {
 }
 
 createProduct(PRODUCTS);
 filtersElement.addEventListener('click', filterProducts);
+galleryElement.addEventListener('click', changeButton)
+
+//addToCartButton.addEventListener('click', () => {
+//  addToCartButton.classList.add('hide');
+//  buttonPlusandMinusDiv.classList.remove('hide');
+//});
