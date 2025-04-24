@@ -103,22 +103,9 @@ const PRODUCTS = [
     }
   ];
 
-const sortByName = [...PRODUCTS];
-const sortByPrice = [...PRODUCTS];
+  const createProduct = (products) => {
 
-let  currentFilter = "default";
-
-const filterProducts = () => {
-  const filterSelected = filtersElement.querySelector('.filter-active').dataset.filter;
-
-  if(filterSelected === 'name'){
-   sortByName.sort((a, b) => a.name.localeCompare(b.name));
-  } else if (filterSelected === 'price'){
-    sortByPrice.sort((a, b) => a.price - b.price);
-  }
-}
-
-  const createProduct = () => {
+    galleryElement.textContent = "";
     PRODUCTS.forEach(product => {
 
         //product card: hijo 0 de gallery Element
@@ -218,15 +205,35 @@ const filterProducts = () => {
     galleryElement.append(productArticle);
     })
 }
+const filterProducts = (event) => {
+  const filterSelected = event.target.dataset.filter;
+  console.log(filterSelected);
 
-const sortProducts = () => {
-  currentFilter = event.target.dataset.filter
-  console.log(currentFilter) 
-  //const filterType = filtersElement.querySelector('.filter-active').dataset.filter;
-  //sortByName.sort((a,b) => a.localeCompare(b));
+  const sortByName = [...PRODUCTS];
+  const sortByPrice = [...PRODUCTS];
 
-  createProduct(currentFilter);
+  if(filterSelected === 'name'){
+    filtersElement.children[1].classList.add('filter-active')
+    filtersElement.children[0].classList.remove('filter-active')
+    filtersElement.children[2].classList.remove('filter-active')
+    sortByName.sort((a, b) => a.name.localeCompare(b.name));
+    createProduct(sortByName);
+    console.log(sortByName)
+  } else if (filterSelected === 'price'){
+    filtersElement.children[2].classList.add('filter-active')
+    filtersElement.children[0].classList.remove('filter-active')
+    filtersElement.children[1].classList.remove('filter-active')
+    sortByPrice.sort((a, b) => a.price - b.price);
+    createProduct(sortByPrice)
+    console.log(sortByPrice)
+  }else {
+    filtersElement.children[0].classList.add('filter-active')
+    filtersElement.children[1].classList.remove('filter-active')
+    filtersElement.children[2].classList.remove('filter-active')
+    createProduct(PRODUCTS);
+    console.log(PRODUCTS)
+  }
 }
 createProduct();
 
-filtersElement.addEventListener('click',sortProducts)
+filtersElement.addEventListener('click', filterProducts);
