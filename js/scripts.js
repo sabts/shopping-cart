@@ -105,29 +105,60 @@ const PRODUCTS = [
 
   let shoppingCart = [];
 
-const amountOfProduct = (event, product) => {
+  let quantity = 1;
+
+
+const confirmProductinCart = (product) => {
+  const productExists = shoppingCart.find(itemInCart => itemInCart.id === product.id);
+  return productExists;
+};
+
+const addProduct = (event, product) => {
   const buttonclicked = event.target;
 
   const productCard = buttonclicked.parentElement.parentElement; 
   const addButton = productCard.children[1].children[0];
   const plusminusButton = productCard.children[1].children[1];
-  const minusButton = plusminusButton.children[0];
-  const countSpan = minusButton.nextElementSibling;
   const pictureOfproductSelected = productCard.children[0];
 
+  //sale el otro boton
   if (buttonclicked === addButton) {
-    console.log('Click en Add to Cart');
+    console.log('Agregaste con add button');
     addButton.classList.add('hide'); 
     plusminusButton.classList.remove('hide');
     pictureOfproductSelected.classList.add('product-picture-selected');
-  } 
-  else if (countSpan.textContent === '1' && buttonclicked === minusButton) {
-    console.log('Click en Minus Button y el texto es 1');
-    addButton.classList.remove('hide'); 
-    plusminusButton.classList.add('hide');
-    pictureOfproductSelected.classList.remove('product-picture-selected'); 
+    
+    shoppingCart.push({ ...product, quantity: 1 });
+    //console.log(shoppingCart);
+    return;
   }
+}
+console.log(shoppingCart)
+
+const addamountOfProduct = (event, product) => {
+  const buttonclicked = event.target;
+
+  const productCard = buttonclicked.parentElement.parentElement; 
+  const plusButton = productCard.children[2]; 
+  const countSpan = productCard.children[1];
+  //console.log(plusButton)
+ // console.log(countSpan)
+
+  const existingProduct = confirmProductinCart(product);
+    
+  if (existingProduct) {
+    existingProduct.quantity += 1;
+    countSpan.textContent = existingProduct.quantity;
+  }
+
+  console.log('add amount button');
+  console.log(shoppingCart);
 };
+
+
+//const subtractamountOfProduct = (event, product) => 
+//};
+
 
 const createProduct = (products) => {
   galleryElement.textContent = "";
@@ -135,7 +166,7 @@ const createProduct = (products) => {
 
     products.forEach(product => {
 
-        //product card: hijo 0 de 
+        //product card: hijo 0
         const productArticle = document.createElement('article');
         productArticle.classList.add('product-card');
         productArticle.id = product.id;
@@ -167,10 +198,10 @@ const createProduct = (products) => {
         pictureElement.append(sourceDesktop, sourceTablet, sourceMobile, imgElement);
         pictureDiv.append(pictureElement);
 
-        //pictureDiv.addEventListener('click', (event) => {
-         // amountOfProduct(event, product);
-        //});
-        
+        pictureDiv.addEventListener('click', (event) => {
+        addamountOfProduct(event, product);
+        });
+
         //Botones del producto hijo 1 de product card (hijo 0)
         const buttonDiv = document.createElement('div');
         buttonDiv.classList.add("product-buttons");
@@ -183,7 +214,7 @@ const createProduct = (products) => {
         addToCartButton.textContent = 'Add to Cart';
 
         addToCartButton.addEventListener('click', (event) => {
-          amountOfProduct(event, product);
+          addProduct(event, product);
         });
         
         addToCartButton.prepend(cartIcon)
@@ -210,11 +241,11 @@ const createProduct = (products) => {
         buttonDiv.append(addToCartButton,buttonPlusandMinusDiv);
 
         plusButton.addEventListener('click', (event) => {
-          amountOfProduct(event, product);
+          addamountOfProduct(event, product);
         });
-        buttonMinus.addEventListener('click', (event) => {
-          amountOfProduct(event, product);
-        });
+       // buttonMinus.addEventListener('click', (event) => {
+         // subtractamountOfProduct(event, product);
+        //});
         
         //text content del producto hijo 2 de product card
         const productTextContenDiv = document.createElement('div');
@@ -275,8 +306,3 @@ const filterProducts = (event) => {
 
 createProduct(PRODUCTS);
 filtersElement.addEventListener('click', filterProducts);
-
-//addToCartButton.addEventListener('click', () => {
-//  addToCartButton.classList.add('hide');
-//  buttonPlusandMinusDiv.classList.remove('hide');
-//});
