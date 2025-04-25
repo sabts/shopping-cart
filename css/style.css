@@ -118,6 +118,7 @@ body{
 }
 .hide{
     display: none;
+    pointer-events: none;
 }
 .product-content{
     display: flex;

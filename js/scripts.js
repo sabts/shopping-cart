@@ -107,24 +107,27 @@ const PRODUCTS = [
 
 const amountOfProduct = (event, product) => {
   const buttonclicked = event.target;
-  const addButton = galleryElement.children[0].children[1].children[0];
-  const plusminusButton = galleryElement.children[0].children[1].children[1]
-  const minusButton = galleryElement.children[0].children[1].children[1].children[0];
-  const countSpan = minusButton.nextSibling;
-  const pictureOfproductSelected = galleryElement.children[0].children[0];
+
+  const productCard = buttonclicked.parentElement.parentElement; 
+  const addButton = productCard.children[1].children[0];
+  const plusminusButton = productCard.children[1].children[1];
+  const minusButton = plusminusButton.children[0];
+  const countSpan = minusButton.nextElementSibling;
+  const pictureOfproductSelected = productCard.children[0];
 
   if (buttonclicked === addButton) {
     console.log('Click en Add to Cart');
-    addButton.classList.add('hide');
+    addButton.classList.add('hide'); 
     plusminusButton.classList.remove('hide');
     pictureOfproductSelected.classList.add('product-picture-selected');
-  } else if (countSpan.textContent === '1' && buttonclicked === minusButton) {
-    console.log('Click en el boton - ');
-    addButton.classList.remove('hide');
+  } 
+  else if (countSpan.textContent === '1' && buttonclicked === minusButton) {
+    console.log('Click en Minus Button y el texto es 1');
+    addButton.classList.remove('hide'); 
     plusminusButton.classList.add('hide');
-    pictureOfproductSelected.classList.remove('product-picture-selected');
+    pictureOfproductSelected.classList.remove('product-picture-selected'); 
   }
-}
+};
 
 const createProduct = (products) => {
   galleryElement.textContent = "";
@@ -164,6 +167,10 @@ const createProduct = (products) => {
         pictureElement.append(sourceDesktop, sourceTablet, sourceMobile, imgElement);
         pictureDiv.append(pictureElement);
 
+        //pictureDiv.addEventListener('click', (event) => {
+         // amountOfProduct(event, product);
+        //});
+        
         //Botones del producto hijo 1 de product card (hijo 0)
         const buttonDiv = document.createElement('div');
         buttonDiv.classList.add("product-buttons");
@@ -175,6 +182,10 @@ const createProduct = (products) => {
         cartIcon.src = "./assets/images/icon-add-to-cart.svg";
         addToCartButton.textContent = 'Add to Cart';
 
+        addToCartButton.addEventListener('click', (event) => {
+          amountOfProduct(event, product);
+        });
+        
         addToCartButton.prepend(cartIcon)
         //boton 2 (agregar o quitar productos)
         const buttonPlusandMinusDiv = document.createElement('div');
