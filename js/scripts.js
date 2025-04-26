@@ -121,6 +121,7 @@ const addProduct = (event, product) => {
   const plusminusButton = productCard.children[1].children[1];
   const minusbutton = plusminusButton.children[0];
   const countSpan = plusminusButton.children[1];
+  const count = +countSpan.textContent;
   const pictureOfproductSelected = productCard.children[0];
 
   //sale el otro boton
@@ -131,8 +132,13 @@ const addProduct = (event, product) => {
     pictureOfproductSelected.classList.add('product-picture-selected');
     shoppingCart.push({ ...product, quantity: 1 });
     //console.log(shoppingCart);
-    return;
-  }
+    } else if (buttonclicked === minusbutton &&  countSpan.textContent === '1'){
+      addButton.classList.remove('hide'); 
+      plusminusButton.classList.add('hide');
+      console.log(plusminusButton)
+      pictureOfproductSelected.classList.remove('product-picture-selected');
+      return 
+    }
 }
 
 const addamountOfProduct = (event, product) => {
@@ -149,7 +155,6 @@ const addamountOfProduct = (event, product) => {
     existingProduct.quantity += 1;
     countSpan.textContent = existingProduct.quantity;
   }
-
   console.log('add amount button');
   console.log(shoppingCart);
 };
@@ -158,6 +163,7 @@ const addamountOfProduct = (event, product) => {
 const subtractamountOfProduct = (event, product) => {
   const buttonclicked = event.target;
 
+  const addButton = buttonclicked
   const plusminusButton = buttonclicked.parentElement.parentElement;
   const countSpan = plusminusButton.children[1];
   
@@ -166,6 +172,11 @@ const subtractamountOfProduct = (event, product) => {
  if (existingProduct) {
   existingProduct.quantity -= 1;
   countSpan.textContent = existingProduct.quantity;
+} else if(buttonclicked === minusbutton && countSpan === 1){
+  console.log('borraste el producto');
+  addButton.classList.remove('hide'); 
+  plusminusButton.classList.add('hide');
+  pictureOfproductSelected.classList.hide('product-picture-selected');
 }
 };
 
@@ -206,10 +217,6 @@ const createProduct = (products) => {
         //Agrego todas al div
         pictureElement.append(sourceDesktop, sourceTablet, sourceMobile, imgElement);
         pictureDiv.append(pictureElement);
-
-        pictureDiv.addEventListener('click', (event) => {
-        addamountOfProduct(event, product);
-        });
 
         //Botones del producto hijo 1 de product card (hijo 0)
         const buttonDiv = document.createElement('div');
