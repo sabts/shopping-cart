@@ -130,13 +130,6 @@ const addProduct = (event, product) => {
     pictureDiv.classList.add('product-picture-selected');
     shoppingCart.push({ ...product, quantity: 1 });
   }
-
-  if ((buttonclicked === minusButton || buttonclicked === minusButton.children[0]) && countSpan.textContent === "1") {
-    addButton.classList.remove('hide');
-    plusMinusDiv.classList.add('hide');
-    pictureDiv.classList.remove('product-picture-selected');
-    shoppingCart = shoppingCart.filter(item => item.id !== product.id);
-  }
 };
 
 const addamountOfProduct = (event, product) => {
@@ -160,22 +153,30 @@ const addamountOfProduct = (event, product) => {
 
 const subtractamountOfProduct = (event, product) => {
   const buttonclicked = event.target;
-
-  const addButton = buttonclicked
-  const plusminusButton = buttonclicked.parentElement.parentElement;
-  const countSpan = plusminusButton.children[1];
   
+  const plusButtonOrImg = buttonclicked;
+  const plusMinusDiv = plusButtonOrImg.parentElement;
+  const buttonsDiv = plusMinusDiv.parentElement;    
+  const productCard = buttonsDiv.parentElement;     
+
+  const addButton = buttonsDiv.children[0];         
+  const countSpan = plusMinusDiv.children[1];      
+  const pictureDiv = productCard.children[0]; 
+
   const existingProduct = confirmProductinCart(product);
 
- if (existingProduct) {
-  existingProduct.quantity -= 1;
-  countSpan.textContent = existingProduct.quantity;
-} else if(buttonclicked === minusbutton && countSpan === 1){
-  console.log('borraste el producto');
-  addButton.classList.remove('hide'); 
-  plusminusButton.classList.add('hide');
-  pictureOfproductSelected.classList.hide('product-picture-selected');
-}
+  if (existingProduct) {
+    existingProduct.quantity -= 1;
+
+    if (existingProduct.quantity === 0) {
+      addButton.classList.remove('hide');
+      plusMinusDiv.classList.add('hide');
+      pictureDiv.classList.remove('product-picture-selected');
+      shoppingCart = shoppingCart.filter(item => item.id !== product.id);
+    } else {
+      countSpan.textContent = existingProduct.quantity;
+    }
+  }
 };
 
 const createProduct = (products) => {
@@ -230,6 +231,7 @@ const createProduct = (products) => {
         addToCartButton.addEventListener('click', (event) => {
           addProduct(event, product);
         });
+        
         addToCartButton.prepend(cartIcon)
         //boton 2 (agregar o quitar productos)
         const buttonPlusandMinusDiv = document.createElement('div');
