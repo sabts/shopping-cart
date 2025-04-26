@@ -115,31 +115,29 @@ const confirmProductinCart = (product) => {
 
 const addProduct = (event, product) => {
   const buttonclicked = event.target;
-//console.log(buttonclicked.textContent)
-  const productCard = buttonclicked.parentElement.parentElement; 
-  const addButton = productCard.children[1].children[0];
-  const plusminusButton = productCard.children[1].children[1];
-  const minusbutton = plusminusButton.children[0];
-  const countSpan = plusminusButton.children[1];
-  const count = +countSpan.textContent;
-  const pictureOfproductSelected = productCard.children[0];
 
-  //sale el otro boton
-  if (buttonclicked === addButton) {
-    console.log('Agregaste con add button');
-    addButton.classList.add('hide'); 
-    plusminusButton.classList.remove('hide');
-    pictureOfproductSelected.classList.add('product-picture-selected');
+  const productCard = buttonclicked.parentElement.parentElement;
+  const buttonsDiv = productCard.children[1];
+  const addButton = buttonsDiv.children[0];
+  const plusMinusDiv = buttonsDiv.children[1];
+  const minusButton = plusMinusDiv.children[0];
+  const countSpan = plusMinusDiv.children[1]; 
+  const pictureDiv = productCard.children[0];
+  
+  if (buttonclicked=== addButton || buttonclicked === addButton.children[0]) {
+    addButton.classList.add('hide');
+    plusMinusDiv.classList.remove('hide');
+    pictureDiv.classList.add('product-picture-selected');
     shoppingCart.push({ ...product, quantity: 1 });
-    //console.log(shoppingCart);
-    } else if (buttonclicked === minusbutton &&  countSpan.textContent === '1'){
-      addButton.classList.remove('hide'); 
-      plusminusButton.classList.add('hide');
-      console.log(plusminusButton)
-      pictureOfproductSelected.classList.remove('product-picture-selected');
-      return 
-    }
-}
+  }
+
+  if ((buttonclicked === minusButton || buttonclicked === minusButton.children[0]) && countSpan.textContent === "1") {
+    addButton.classList.remove('hide');
+    plusMinusDiv.classList.add('hide');
+    pictureDiv.classList.remove('product-picture-selected');
+    shoppingCart = shoppingCart.filter(item => item.id !== product.id);
+  }
+};
 
 const addamountOfProduct = (event, product) => {
   const buttonclicked = event.target;
