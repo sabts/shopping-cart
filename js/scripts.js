@@ -386,14 +386,17 @@ const createCart = (cartItems) => {
       priceDetails.append(quantitySpan, unitPriceSpan, totalSpan);
       infoDiv.append(nameSpan, priceDetails);
 
-      const removeBtn = document.createElement("button");
-      removeBtn.classList.add("icon-remove-item");
-
+      const removeButton = document.createElement("button");
+      removeButton.classList.add("icon-remove-item");
+      removeButton.dataset.productId = item.id;
+      
       const removeIcon = document.createElement("img");
       removeIcon.src = "./assets/images/icon-remove-item.svg";
-      removeBtn.append(removeIcon);
+      removeButton.append(removeIcon);
 
-      productDiv.append(infoDiv, removeBtn);
+      removeButton.addEventListener('click', event => removeProductInCart(event))
+
+      productDiv.append(infoDiv, removeButton);
       cartContent.append(productDiv);
     }); 
 
@@ -402,37 +405,52 @@ const createCart = (cartItems) => {
   checkoutDiv.classList.add("checkout");
 
   const totalText = document.createElement("span");
-  totalText.classList.add("total-text",'hide');
+  totalText.classList.add("total-text");
   totalText.textContent = "Order Total";
 
   const totalAmount = cartItems.reduce((sum, p) => sum + p.price * p.quantity, 0);
   const totalPrice = document.createElement("span");
-  totalPrice.classList.add("total-price",'hide');
+  totalPrice.classList.add("total-price");
   totalPrice.textContent = `$${totalAmount.toFixed(2)}`;
 
   checkoutDiv.append(totalText, totalPrice);
 
   const confirmButton = document.createElement("button");
-  confirmButton.classList.add("button", "button-secondary");
+  confirmButton.classList.add("button", "button-confirm");
   confirmButton.textContent = "Confirm Order";
 
   container.append(productsInDiv, cartContent, checkoutDiv, confirmButton);
   cartElement.append(container);
+
+  emptyCartandProductIn(cartItems.length)
 };
 
 const emptyCartandProductIn = () => {
  const container = cartElement.children[0];
   const checkoutDiv = container.children[2];
+  const totalText = checkoutDiv.children[0];
+  const totalPrice = checkoutDiv.children[1];
   const checkoutButton = container.children[3];
+  console.log(checkoutDiv.children)
   
   if (shoppingCart.length !== 0) {
     checkoutDiv.classList.remove("hide");
-    checkoutButton.classList.remove("hide")
+    checkoutButton.classList.remove("hide");
+    totalText.classList.remove("hide");
+    totalPrice.classList.remove("hide");
   } else {
     checkoutDiv.classList.add("hide");
-    checkoutButton.classList.add("hide")
+    checkoutButton.classList.add("hide");
+    totalText.classList.add("hide");
+    totalPrice.classList.add("hide");
   }
 };
+
+const removeProductInCart = (event) => {
+  const productId = event.target.dataset.productId; 
+  shoppingCart = shoppingCart.filter(item => item.id !== productId);
+  createCart(shoppingCart);
+}
 
 createProduct(PRODUCTS);
 createCart(shoppingCart);
