@@ -131,6 +131,7 @@ const addProduct = (event, product) => {
     pictureDiv.classList.add('product-picture-selected');
     shoppingCart.push({ ...product, quantity: 1 });
   }
+  createCart(shoppingCart) 
 };
 
 const addamountOfProduct = (event, product) => {
@@ -147,8 +148,9 @@ const addamountOfProduct = (event, product) => {
     existingProduct.quantity += 1;
     countSpan.textContent = existingProduct.quantity;
   }
-  console.log('add amount button');
-  console.log(shoppingCart);
+  //console.log('add amount button');
+  //console.log(shoppingCart);
+  createCart(shoppingCart)
 };
 
 
@@ -178,6 +180,7 @@ const subtractamountOfProduct = (event, product) => {
       countSpan.textContent = existingProduct.quantity;
     }
   }
+  createCart(shoppingCart)
 };
 
 const createProduct = (products) => {
@@ -321,80 +324,117 @@ const filterProducts = (event) => {
 }
 
 const createCart = (cartItems) => {
+  cartElement.textContent = "";
+
+  //hijo 0 de cart element
   const container = document.createElement("section");
   container.classList.add("shopping-cart-container");
   container.id = "cart";
 
-  const headerDiv = document.createElement("div");
+  //hijo 0 de container
+  const productsInDiv = document.createElement("div");
   const title = document.createElement("h2");
   title.textContent = `Your Cart (${cartItems.length})`;
-  headerDiv.append(title);
+  productsInDiv.append(title);
 
+  //hijo 1 de container
   const cartContent = document.createElement("div");
   cartContent.classList.add("cart-content");
 
-  cartItems.forEach(item => {
-    const productDiv = document.createElement("div");
-    productDiv.classList.add("product-in-cart");
+  //hijo 0 de cart content
+  let emptyDiv = document.createElement("div");
+  emptyDiv.classList.add("emtycart");
+  
+  if (cartItems.length === 0) {
+    const emptyImg = document.createElement("img");
+    emptyImg.src = "./assets/images/illustration-empty-cart.svg";
+    const emptyText = document.createElement("p");
+    emptyText.textContent = "Your added items will appear here";
 
-    const infoDiv = document.createElement("div");
-    infoDiv.classList.add("product-infoCart");
+    emptyDiv.append(emptyImg, emptyText);
+    cartContent.append(emptyDiv);
+  } else {
+    emptyDiv.classList.add("hide");
+  }
 
-    const nameSpan = document.createElement("span");
-    nameSpan.classList.add("productname");
-    nameSpan.textContent = item.title;
+    //hijo 1 de cartcontent
+    cartItems.forEach(item => {
+      const productDiv = document.createElement("div");
+      productDiv.classList.add("product-in-cart");
 
-    const priceDetails = document.createElement("div");
+      const infoDiv = document.createElement("div");
+      infoDiv.classList.add("product-infoCart");
 
-    const quantitySpan = document.createElement("span");
-    quantitySpan.classList.add("quantityin");
-    quantitySpan.textContent = `${item.quantity}x`;
+      const nameSpan = document.createElement("span");
+      nameSpan.classList.add("productname");
+      nameSpan.textContent = item.title;
 
-    const unitPriceSpan = document.createElement("span");
-    unitPriceSpan.classList.add("price-by-unit");
-    unitPriceSpan.textContent = `@$${item.price.toFixed(2)}`;
+      const priceDetails = document.createElement("div");
 
-    const totalSpan = document.createElement("span");
-    totalSpan.classList.add("total-product-price");
-    totalSpan.textContent = `$${(item.quantity * item.price).toFixed(2)}`;
+      const quantitySpan = document.createElement("span");
+      quantitySpan.classList.add("quantityin");
+      quantitySpan.textContent = `${item.quantity}x`;
 
-    priceDetails.append(quantitySpan, unitPriceSpan, totalSpan);
-    infoDiv.append(nameSpan, priceDetails);
+      const unitPriceSpan = document.createElement("span");
+      unitPriceSpan.classList.add("price-by-unit");
+      unitPriceSpan.textContent = `@$${item.price.toFixed(2)}`;
 
-    const removeBtn = document.createElement("button");
-    removeBtn.classList.add("icon-remove-item");
+      const totalSpan = document.createElement("span");
+      totalSpan.classList.add("total-product-price");
+      totalSpan.textContent = `$${(item.quantity * item.price).toFixed(2)}`;
 
-    const removeIcon = document.createElement("img");
-    removeIcon.src = "./assets/images/icon-remove-item.svg";
-    removeBtn.append(removeIcon);
+      priceDetails.append(quantitySpan, unitPriceSpan, totalSpan);
+      infoDiv.append(nameSpan, priceDetails);
 
-    productDiv.append(infoDiv, removeBtn);
-    cartContent.append(productDiv);
-  });
+      const removeBtn = document.createElement("button");
+      removeBtn.classList.add("icon-remove-item");
 
+      const removeIcon = document.createElement("img");
+      removeIcon.src = "./assets/images/icon-remove-item.svg";
+      removeBtn.append(removeIcon);
+
+      productDiv.append(infoDiv, removeBtn);
+      cartContent.append(productDiv);
+    }); 
+
+  //hijo 2 de cart content
   const checkoutDiv = document.createElement("div");
   checkoutDiv.classList.add("checkout");
 
   const totalText = document.createElement("span");
-  totalText.classList.add("total-text");
+  totalText.classList.add("total-text",'hide');
   totalText.textContent = "Order Total";
 
   const totalAmount = cartItems.reduce((sum, p) => sum + p.price * p.quantity, 0);
   const totalPrice = document.createElement("span");
-  totalPrice.classList.add("total-price");
+  totalPrice.classList.add("total-price",'hide');
   totalPrice.textContent = `$${totalAmount.toFixed(2)}`;
 
   checkoutDiv.append(totalText, totalPrice);
 
-  const confirmBtn = document.createElement("button");
-  confirmBtn.classList.add("button", "button-secondary");
-  confirmBtn.textContent = "Confirm Order";
+  const confirmButton = document.createElement("button");
+  confirmButton.classList.add("button", "button-secondary");
+  confirmButton.textContent = "Confirm Order";
 
-  container.append(headerDiv, cartContent, checkoutDiv, confirmBtn);
+  container.append(productsInDiv, cartContent, checkoutDiv, confirmButton);
   cartElement.append(container);
 };
 
+const emptyCartandProductIn = () => {
+ const container = cartElement.children[0];
+  const checkoutDiv = container.children[2];
+  const checkoutButton = container.children[3];
+  
+  if (shoppingCart.length !== 0) {
+    checkoutDiv.classList.remove("hide");
+    checkoutButton.classList.remove("hide")
+  } else {
+    checkoutDiv.classList.add("hide");
+    checkoutButton.classList.add("hide")
+  }
+};
 
 createProduct(PRODUCTS);
 createCart(shoppingCart);
+emptyCartandProductIn()
 filtersElement.addEventListener('click', filterProducts);
