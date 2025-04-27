@@ -121,7 +121,7 @@ const addProduct = (event, product) => {
   const buttonsDiv = productCard.children[1];
   const addButton = buttonsDiv.children[0];
   const plusMinusDiv = buttonsDiv.children[1];
-  const minusButton = plusMinusDiv.children[0];
+  //const minusButton = plusMinusDiv.children[0];
   const countSpan = plusMinusDiv.children[1]; 
   const pictureDiv = productCard.children[0];
   
@@ -237,6 +237,7 @@ const createProduct = (products) => {
         });
         
         addToCartButton.prepend(cartIcon)
+
         //boton 2 (agregar o quitar productos)
         const buttonPlusandMinusDiv = document.createElement('div');
         buttonPlusandMinusDiv.classList.add('button', 'button-secondary', 'cart-action', 'hide')
@@ -258,6 +259,19 @@ const createProduct = (products) => {
 
         buttonPlusandMinusDiv.append(buttonMinus, buttonNumberValue, plusButton)
         buttonDiv.append(addToCartButton,buttonPlusandMinusDiv);
+
+        const productExists = confirmProductinCart(product)
+
+        if (productExists) {
+          addToCartButton.classList.add('hide');
+          buttonPlusandMinusDiv.classList.remove('hide');
+          pictureDiv.classList.add('product-picture-selected');
+          buttonNumberValue.textContent = productExists.quantity;
+        } else {
+          addToCartButton.classList.remove('hide');
+          buttonPlusandMinusDiv.classList.add('hide');
+          pictureDiv.classList.remove('product-picture-selected');
+        }
 
         plusButton.addEventListener('click', (event) => {
           addamountOfProduct(event, product);
@@ -389,7 +403,7 @@ const createCart = (cartItems) => {
       const removeButton = document.createElement("button");
       removeButton.classList.add("icon-remove-item");
       removeButton.dataset.productId = item.id;
-      
+
       const removeIcon = document.createElement("img");
       removeIcon.src = "./assets/images/icon-remove-item.svg";
       removeButton.append(removeIcon);
