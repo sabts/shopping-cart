@@ -1,5 +1,6 @@
 const filtersElement = document.getElementById("filters");
 const galleryElement = document.getElementById("gallery");
+const cartElement = document.getElementById('cart')
 
 const PRODUCTS = [
     {
@@ -319,5 +320,81 @@ const filterProducts = (event) => {
   }
 }
 
+const createCart = (cartItems) => {
+  const container = document.createElement("section");
+  container.classList.add("shopping-cart-container");
+  container.id = "cart";
+
+  const headerDiv = document.createElement("div");
+  const title = document.createElement("h2");
+  title.textContent = `Your Cart (${cartItems.length})`;
+  headerDiv.append(title);
+
+  const cartContent = document.createElement("div");
+  cartContent.classList.add("cart-content");
+
+  cartItems.forEach(item => {
+    const productDiv = document.createElement("div");
+    productDiv.classList.add("product-in-cart");
+
+    const infoDiv = document.createElement("div");
+    infoDiv.classList.add("product-infoCart");
+
+    const nameSpan = document.createElement("span");
+    nameSpan.classList.add("productname");
+    nameSpan.textContent = item.title;
+
+    const priceDetails = document.createElement("div");
+
+    const quantitySpan = document.createElement("span");
+    quantitySpan.classList.add("quantityin");
+    quantitySpan.textContent = `${item.quantity}x`;
+
+    const unitPriceSpan = document.createElement("span");
+    unitPriceSpan.classList.add("price-by-unit");
+    unitPriceSpan.textContent = `@$${item.price.toFixed(2)}`;
+
+    const totalSpan = document.createElement("span");
+    totalSpan.classList.add("total-product-price");
+    totalSpan.textContent = `$${(item.quantity * item.price).toFixed(2)}`;
+
+    priceDetails.append(quantitySpan, unitPriceSpan, totalSpan);
+    infoDiv.append(nameSpan, priceDetails);
+
+    const removeBtn = document.createElement("button");
+    removeBtn.classList.add("icon-remove-item");
+
+    const removeIcon = document.createElement("img");
+    removeIcon.src = "./assets/images/icon-remove-item.svg";
+    removeBtn.append(removeIcon);
+
+    productDiv.append(infoDiv, removeBtn);
+    cartContent.append(productDiv);
+  });
+
+  const checkoutDiv = document.createElement("div");
+  checkoutDiv.classList.add("checkout");
+
+  const totalText = document.createElement("span");
+  totalText.classList.add("total-text");
+  totalText.textContent = "Order Total";
+
+  const totalAmount = cartItems.reduce((sum, p) => sum + p.price * p.quantity, 0);
+  const totalPrice = document.createElement("span");
+  totalPrice.classList.add("total-price");
+  totalPrice.textContent = `$${totalAmount.toFixed(2)}`;
+
+  checkoutDiv.append(totalText, totalPrice);
+
+  const confirmBtn = document.createElement("button");
+  confirmBtn.classList.add("button", "button-secondary");
+  confirmBtn.textContent = "Confirm Order";
+
+  container.append(headerDiv, cartContent, checkoutDiv, confirmBtn);
+  cartElement.append(container);
+};
+
+
 createProduct(PRODUCTS);
+createCart(shoppingCart);
 filtersElement.addEventListener('click', filterProducts);
